@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Blaze based on raphaeljs</title>
+  <script type="text/javascript" src="vendor/raphael-min.js"></script>
+  <script type="text/javascript" src="vendor/jasmine/lib/jasmine-core/jasmine.js"></script>
+  <script type="text/javascript" src="vendor/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+
+  <!-- include source files here... -->
+  <script type="text/javascript" src="src/blaze.js"></script>
+
+  <!-- include specs files here... -->
+  <script type="text/javascript" src="specs/FinderSpec.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="vendor/jasmine/lib/jasmine-core/jasmine.css">
+</head>
+<body>
+
+<script type="text/javascript">
+    jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+    jasmine.getEnv().execute();
+</script>
+
+</body>
+</html>
