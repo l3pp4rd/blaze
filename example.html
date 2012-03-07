@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js"></script>
+    <script type="text/javascript" src="src/blaze.js"></script>
+</head>
+<body>
+    <div id="chart"></div>
+
+<script type="text/javascript">
+
+(function() {
+
+var paper = Raphael('chart', 320, 200);
+var rect = paper.rect(20, 20, 20, 20).data('name', 'chart.bar').attr({fill: 'red'});
+var circle = rect.paper.circle(5, 5, 5).data('name', 'chart.body').attr({fill: 'blue'});
+blaze(paper).findOneBy('name', /chart\..+/).attr({fill: 'black'});
+blaze(paper).findAllBy('name', /chart\..+/).attr({fill: 'green'});
+
+})();
+</script>
+</body>
+</html>
