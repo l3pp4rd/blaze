@@ -116,7 +116,6 @@ var blaze = (function() {
       });
       return st;
     }
-
   };
   blaze.fn.init.prototype = blaze.fn;
   return blaze;

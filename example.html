@@ -5,18 +5,52 @@
     <script type="text/javascript" src="src/blaze.js"></script>
 </head>
 <body>
-    <div id="chart"></div>
+    <div id="grid-area"></div>
 
 <script type="text/javascript">
 
 (function() {
 
-var paper = Raphael('chart', 320, 200);
-var rect = paper.rect(20, 20, 20, 20).data('name', 'chart.bar').attr({fill: 'red'});
-var circle = rect.paper.circle(5, 5, 5).data('name', 'chart.body').attr({fill: 'blue'});
-blaze(paper).findOneBy('name', /chart\..+/).attr({fill: 'black'});
-blaze(paper).findAllBy('name', /chart\..+/).attr({fill: 'green'});
+// initialize raphael paper as a rectangle
+var paper = Raphael('grid-area', 800, 300);
+var rectNum = 1;
+// draw a grid
+for (var i = 0; i < 9; i++) {
+    for (var j = 0; j < 15; j++) {
+        paper
+            .rect(j * 50, i * 30, 50, 30)
+            .attr({stroke: 'black'})
+            .data('name', 'rect'+rectNum)
+            .data('type', (rectNum % 2) ? 'odd' : 'even')
+        ;
+        rectNum++;
+    }
+}
 
+// now lets play with the list of shapes
+// paper contains all shapes created in the given canvas where Raphael is initialized
+
+// after executing all odd rects are now black
+blaze(paper).findAllBy('type', 'odd').attr({fill: '#000'});
+// use a regular expression to fill ones with blue
+blaze(paper).findAllBy('name', /rect[5-7][1-8]/i).attr({fill: '#00f'});
+// use a regular expression to stroke ones with blue
+blaze(paper).findAllBy('name', /rect[2-5][1-9]/i).attr({stroke: '#00f'});
+// find stroked and filled ones with blue, and increase the stroke width
+blaze(paper)
+    .findAllByAttr({'fill': '#00f', 'stroke': '#00f'})
+    .attr({'stroke': 'red', 'stroke-width': 3})
+    .forEach(function(el) {
+        var sz = el.getBBox();
+        // draw a circle inside the rect
+        el.paper
+            .circle(sz.x + 25, sz.y + 15, 10)
+            .attr({fill: 'yellow'})
+            .data('name', el.data('name')+'.circle') // rect5.circle
+        ;
+    })
+;
+// allows to do amazing things fast and easy with Raphaeljs 2.x
 })();
 </script>
 </body>
