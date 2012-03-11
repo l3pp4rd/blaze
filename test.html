@@ -3,7 +3,7 @@
 <html>
 <head>
   <title>Blaze based on raphaeljs</title>
-  <script type="text/javascript" src="vendor/raphael-min.js"></script>
+  <script type="text/javascript" src="vendor/raphael/raphael-min.js"></script>
   <script type="text/javascript" src="vendor/jasmine/lib/jasmine-core/jasmine.js"></script>
   <script type="text/javascript" src="vendor/jasmine/lib/jasmine-core/jasmine-html.js"></script>
 
@@ -16,6 +16,8 @@
   <link rel="stylesheet" type="text/css" href="vendor/jasmine/lib/jasmine-core/jasmine.css">
 </head>
 <body>
+
+    <div id="drawing"></div>
 
 <script type="text/javascript">
     jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
