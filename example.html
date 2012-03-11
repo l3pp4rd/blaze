@@ -31,11 +31,11 @@ for (var i = 0; i < 9; i++) {
 // paper contains all shapes created in the given canvas where Raphael is initialized
 
 // after executing all odd rects are now black
-blaze(paper).findAllBy('type', 'odd').attr({fill: '#000'});
+blaze(paper).findAllByData('type', 'odd').attr({fill: '#000'});
 // use a regular expression to fill ones with blue
-blaze(paper).findAllBy('name', /rect[5-7][1-8]/i).attr({fill: '#00f'});
+blaze(paper).findAllByData('name', /rect[5-7][1-8]/i).attr({fill: '#00f'});
 // use a regular expression to stroke ones with blue
-blaze(paper).findAllBy('name', /rect[2-5][1-9]/i).attr({stroke: '#00f'});
+blaze(paper).findAllByData('name', /rect[2-5][1-9]/i).attr({stroke: '#00f'});
 // find stroked and filled ones with blue, and increase the stroke width
 blaze(paper)
     .findAllByAttr({'fill': '#00f', 'stroke': '#00f'})
@@ -51,6 +51,8 @@ blaze(paper)
     })
 ;
 // allows to do amazing things fast and easy with Raphaeljs 2.x
+// find first blue element and make it green, will stop iteration on first match
+blaze(paper).findFirstByAttr('fill', '#00f').attr({fill: 'green'});
 })();
 </script>
 </body>

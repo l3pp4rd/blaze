@@ -17,6 +17,34 @@ var blaze = (function() {
     return false;
   };
 
+  var findBy = function(paper, data, stopAtFirstMatch, type) {
+    var st = paper.set();
+    paper.forEach(function(el) {
+      st.push(el); // assume matches
+      for (key in data) {
+        if (data.hasOwnProperty(key)) {
+          if (type === 'attr') {
+            // interigate element attributes
+            if (!matches(el.attr(key), data[key])) {
+              st.pop(); // remove, match failed
+              break;
+            }
+          } else { // type === 'data' or anything else
+            // interigate element data
+            if (!matches(el.data(key), data[key])) {
+              st.pop(); // remove, match failed
+              break;
+            }
+          }
+        }
+      }
+      if (st.length && stopAtFirstMatch) {
+        return false; // return the set with first element found
+      }
+    });
+    return st;
+  };
+
   blaze.fn = blaze.prototype = {
     constructor: blaze,
     paper: null,
@@ -24,97 +52,61 @@ var blaze = (function() {
       this.paper = paper;
       return this;
     },
-    findOneBy: function(key, value) {
-      var result, match;
-      this.paper.forEach(function(el) {
-        if (typeof key == 'object') {
-          match = true;
-          for (i in key) {
-            if (key.hasOwnProperty(i)) {
-              if (!matches(el.data(i), key[i])) {
-                match = false;
-                break;
-              }
-            }
-          }
-          if (match) {
-            result = el;
-            return false;
-          }
-        } else if (matches(el.data(key), value)) {
-            result = el;
-            return false;
-        }
-      });
-      return result;
+    findAllByData: function(key, value) {
+      var data = {};
+      if (typeof key == 'object') {
+        data = key;
+      } else {
+        data[key] = value;
+      }
+      return findBy(
+        this.paper,
+        data,
+        false,
+        'data'
+      );
     },
-    findAllBy: function(key, value) {
-      var st = this.paper.set(), match;
-      this.paper.forEach(function(el) {
-        if (typeof key == 'object') {
-          match = true;
-          for (i in key) {
-            if (key.hasOwnProperty(i)) {
-              if (!matches(el.data(i), key[i])) {
-                match = false;
-                break;
-              }
-            }
-          }
-          if (match) {
-            st.push(el);
-          }
-        } else if (matches(el.data(key), value)) {
-            st.push(el);
-        }
-      });
-      return st;
-    },
-    findOneByAttr: function(key, value) {
-      var result, match;
-      this.paper.forEach(function(el) {
-        if (typeof key == 'object') {
-          match = true;
-          for (i in key) {
-            if (key.hasOwnProperty(i)) {
-              if (!matches(el.attr(i), key[i])) {
-                match = false;
-                break;
-              }
-            }
-          }
-          if (match) {
-            result = el;
-            return false;
-          }
-        } else if (matches(el.attr(key), value)) {
-            result = el;
-            return false;
-        }
-      });
-      return result;
+    findFirstByData: function(key, value) {
+      var data = {};
+      if (typeof key == 'object') {
+        data = key;
+      } else {
+        data[key] = value;
+      }
+      return findBy(
+        this.paper,
+        data,
+        true,
+        'data'
+      );
     },
     findAllByAttr: function(key, value) {
-      var st = this.paper.set(), match;
-      this.paper.forEach(function(el) {
-        if (typeof key == 'object') {
-          match = true;
-          for (i in key) {
-            if (key.hasOwnProperty(i)) {
-              if (!matches(el.attr(i), key[i])) {
-                match = false;
-                break;
-              }
-            }
-          }
-          if (match) {
-            st.push(el);
-          }
-        } else if (matches(el.attr(key), value)) {
-            st.push(el);
-        }
-      });
-      return st;
+      var data = {};
+      if (typeof key == 'object') {
+        data = key;
+      } else {
+        data[key] = value;
+      }
+      return findBy(
+        this.paper,
+        data,
+        false,
+        'attr'
+      );
+    },
+    findFirstByAttr: function(key, value) {
+      var data = {};
+      if (typeof key == 'object') {
+        data = key;
+      } else {
+        data[key] = value;
+      }
+      return findBy(
+        this.paper,
+        data,
+        true,
+        'attr'
+      );
     }
   };
   blaze.fn.init.prototype = blaze.fn;
