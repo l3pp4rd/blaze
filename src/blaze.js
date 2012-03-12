@@ -42,13 +42,22 @@ var blaze = (function() {
    * if theres at least one match found.
    *
    * @param Raphael._Paper $paper - is the raphaeljs paper
-   * @param object $data - mixed data to match against
    * @param boolean $stopAtFirstMatch
    * @param string $type - data or attr
+   * @param mixed $dataKey - attribute or data key, can be object with a list of attrs
+   * @param mixed $dataValue - data or attribute value, not required if $key is an object
    * @returns Raphael.Set - the set of elements matched
    */
-  var findBy = function(paper, data, stopAtFirstMatch, type) {
-    var st = paper.set();
+  var findBy = function(paper, stopAtFirstMatch, type, dataKey, dataValue) {
+    var st = paper.set()
+      , data = {}
+    ;
+    if (typeof dataKey == 'object') {
+      data = dataKey;
+    } else {
+      data[dataKey] = dataValue;
+    }
+
     paper.forEach(function(el) {
       st.push(el); // assume matches
       for (key in data) {
@@ -94,18 +103,7 @@ var blaze = (function() {
      * @returns Raphael.Set - the set of elements matched
      */
     findAllByData: function(key, value) {
-      var data = {};
-      if (typeof key == 'object') {
-        data = key;
-      } else {
-        data[key] = value;
-      }
-      return findBy(
-        this.paper,
-        data,
-        false,
-        'data'
-      );
+      return findBy(this.paper, false, 'data', key, value);
     },
     /**
      * Match first paper element based on $key
@@ -116,18 +114,7 @@ var blaze = (function() {
      * @returns Raphael.Set - the empty set or with element matched
      */
     findFirstByData: function(key, value) {
-      var data = {};
-      if (typeof key == 'object') {
-        data = key;
-      } else {
-        data[key] = value;
-      }
-      return findBy(
-        this.paper,
-        data,
-        true,
-        'data'
-      );
+      return findBy(this.paper, true, 'data', key, value);
     },
     /**
      * Match all paper elements based on $key
@@ -138,18 +125,7 @@ var blaze = (function() {
      * @returns Raphael.Set - the set of elements matched
      */
     findAllByAttr: function(key, value) {
-      var data = {};
-      if (typeof key == 'object') {
-        data = key;
-      } else {
-        data[key] = value;
-      }
-      return findBy(
-        this.paper,
-        data,
-        false,
-        'attr'
-      );
+      return findBy(this.paper, false, 'attr', key, value);
     },
     /**
      * Match first paper element based on $key
@@ -160,18 +136,7 @@ var blaze = (function() {
      * @returns Raphael.Set - the empty set or with element matched
      */
     findFirstByAttr: function(key, value) {
-      var data = {};
-      if (typeof key == 'object') {
-        data = key;
-      } else {
-        data[key] = value;
-      }
-      return findBy(
-        this.paper,
-        data,
-        true,
-        'attr'
-      );
+      return findBy(this.paper, true, 'attr', key, value);
     }
   };
   blaze.fn.init.prototype = blaze.fn;
